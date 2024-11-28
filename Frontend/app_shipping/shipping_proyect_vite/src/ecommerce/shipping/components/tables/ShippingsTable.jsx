@@ -7,9 +7,6 @@ import {
   Stack,
   Menu,
   MenuItem,
-  Typography,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,12 +17,9 @@ import DeleteShippingModal from "../modals/DeleteShippingModal";
 import EditShippingModal from "../modals/EditShippingModal";
 import AddInfoAdicional from "../modals/AddInfoAdicionalModal";
 import AddTrackingModal from "../modals/AddTrackingModal "; // Importar modal de rastreo
-import AddEnviosModal from "../modals/AddEnviosModal";
-import AddProductModal from "../modals/AddProductModal";
-
 import { deleteShipping } from "../../services/remote/del/DeleteShipping";
 import { getAllShippings } from "../../services/remote/get/GetAllShippings";
-import { editShipping } from "../../services/remote/put/EditShipping";
+import AddEnviosModal from "../modals/AddEnviosModal";
 
 const ShippingColumns = [
   { accessorKey: "IdInstitutoOK", header: "ID Instituto", size: 200 },
@@ -41,20 +35,13 @@ const ShippingsTable = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddInfoAdModalOpen, setIsAddInfoAdModalOpen] = useState(false);
-  const [isAddTrackingModalOpen, setIsAddTrackingModalOpen] = useState(false);
+  const [isAddTrackingModalOpen, setIsAddTrackingModalOpen] = useState(false); // Estado del modal de rastreo
   const [selectedRow, setSelectedRow] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [contextMenu, setContextMenu] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null); // Controlador para el menú contextual
   const [enviosData, setEnviosData] = useState([]);
   const [isAddEnviosModalOpen, setIsAddEnviosModalOpen] = useState(false);
-  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
-
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
   
-  
-  
-  // Cargar datos desde el backend
-
   
   // Cargar datos desde el backend
   const loadShippingsData = async () => {
@@ -64,14 +51,12 @@ const ShippingsTable = () => {
       setShippingsData(data);
     } catch (error) {
       console.error("Error al cargar los datos de envíos:", error);
-      showSnackbar("Error al cargar los datos. Por favor, intenta nuevamente.", "error");
+      alert("Error al cargar los datos. Por favor, intenta nuevamente.");
     } finally {
       setLoading(false);
     }
   };
 
-
-  
   // Cargar datos al montar el componente
   useEffect(() => {
     loadShippingsData();
@@ -83,7 +68,7 @@ const ShippingsTable = () => {
 
   const handleDeleteShipping = async () => {
     if (!selectedRow) {
-      showSnackbar("Por favor, selecciona una fila antes de eliminar.", "warning");
+      alert("Por favor, selecciona una fila antes de eliminar.");
       return;
     }
 
@@ -96,38 +81,41 @@ const ShippingsTable = () => {
       );
       setSelectedRow(null);
       setIsDeleteModalOpen(false);
-      showSnackbar("Envío eliminado correctamente.", "success");
+      alert("Envío eliminado correctamente.");
     } catch (error) {
       console.error("Error al eliminar el envío:", error);
-      showSnackbar("Ocurrió un error al eliminar el envío.", "error");
+      alert(
+        error.response?.data?.message || "Ocurrió un error al eliminar el envío."
+      );
     }
   };
 
-   
-
   const handleEdit = async (updatedShipping) => {
     try {
-      const updatedData = await editShipping(
+      const updatedData = await updateShipping(
         updatedShipping.IdInstitutoOK,
         updatedShipping
       );
       setShippingsData((prevData) =>
         prevData.map((row) =>
-          row.IdInstitutoOK === updatedData.IdInstitutoOK ? updatedData : row
+          row.IdInstitutoOK === updatedData.IdInstitutoOK
+            ? updatedData
+            : row
         )
       );
       setIsEditModalOpen(false);
-      loadShippingsData();
-      showSnackbar("Envío actualizado correctamente.", "success");
+      alert("Envío actualizado correctamente.");
     } catch (error) {
       console.error("Error al actualizar el envío:", error);
-      showSnackbar("Ocurrió un error al actualizar el envío.", "error");
+      alert(
+        error.response?.data?.message || "Ocurrió un error al actualizar el envío."
+      );
     }
   };
 
   const handleAddTracking = (newTracking) => {
-    showSnackbar(`Nuevo rastreo agregado para el instituto ${selectedRow?.IdInstitutoOK}`, "success");
-    loadShippingsData();
+    alert(`Nuevo rastreo agregado para el instituto ${selectedRow?.IdInstitutoOK}`);
+    loadShippingsData(); // Recargar datos para reflejar el nuevo rastreo
   };
 
   const rowSelectionHandler = (row) => {
@@ -136,7 +124,7 @@ const ShippingsTable = () => {
 
   const handleContextMenu = (event, row) => {
     event.preventDefault();
-    setSelectedRow(row.original);
+    setSelectedRow(row.original); // Establecer la fila seleccionada
     setContextMenu(
       contextMenu === null
         ? {
@@ -147,8 +135,6 @@ const ShippingsTable = () => {
     );
   };
 
-
-  
   const handleCloseContextMenu = () => {
     setContextMenu(null);
   };
@@ -159,21 +145,21 @@ const ShippingsTable = () => {
   };
 
   const handleAddProductos = () => {
-    setIsAddProductModalOpen(true);
+    alert(`Agregar Productos para: ${selectedRow.IdInstitutoOK}`);
     handleCloseContextMenu();
-  }; 
+  };
 
   const handleAddEnvios = () => {
     setIsAddEnviosModalOpen(true);
     handleCloseContextMenu();
   };
 
-  
-
-  const showSnackbar = (message, severity) => {
-    setSnackbar({ open: true, message, severity });
-    setTimeout(() => setSnackbar({ open: false, message: "", severity: "" }), 3000);
+  const handleAddRastreo = () => {
+    console.log("Fila seleccionada para agregar rastreo:", selectedRow); // Verificar el contenido de selectedRow
+    setIsAddTrackingModalOpen(true);
+    handleCloseContextMenu();
   };
+  
 
   return (
     <Box>
@@ -203,44 +189,29 @@ const ShippingsTable = () => {
         IdInstitutoOK={selectedRow?.IdInstitutoOK}
         onInfoAdAdded={(newInfoAd) => {
           console.log("Información adicional agregada:", newInfoAd);
-          loadShippingsData();
+          loadShippingsData(); // Recargar datos
         }}
       />
 
-      <AddEnviosModal
+       <AddEnviosModal
         open={isAddEnviosModalOpen}
         onClose={() => setIsAddEnviosModalOpen(false)}
-        IdInstitutoOK={selectedRow?.IdInstitutoOK}
+        IdInstitutoOK={selectedRow?.IdInstitutoOK} // Pasa la fila seleccionada al modal
         enviosData={enviosData}
         onEnvioAdded={(newEnvio) => {
           setEnviosData((prevData) => [...prevData, newEnvio]);
           console.log("Envío agregado:", newEnvio);
-          loadShippingsData();
+          loadShippingsData(); // Recargar datos
         }}
       />
 
-<AddProductModal
-      open={isAddProductModalOpen}
-      onClose={() => setIsAddProductModalOpen(false)}
-      IdInstitutoOK={selectedRow?.IdInstitutoOK}
-      onProductAdded={(newProduct) => {
-        console.log("Producto agregado:", newProduct);
-        loadShippingsData(); // Recargar datos después de agregar
-      }}
-    />
-
-<AddTrackingModal
+      <AddTrackingModal
         open={isAddTrackingModalOpen}
         onClose={() => setIsAddTrackingModalOpen(false)}
         onAddTracking={handleAddTracking}
         instituteId={selectedRow?.IdInstitutoOK}
       />
 
-      <Snackbar open={snackbar.open} autoHideDuration={3000}>
-        <Alert severity={snackbar.severity} sx={{ width: "100%" }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
 
       <MaterialReactTable
         columns={ShippingColumns}
@@ -309,8 +280,7 @@ const ShippingsTable = () => {
         <MenuItem onClick={handleAddInfoAdicional}>Agregar Info Adicional</MenuItem>
         <MenuItem onClick={handleAddProductos}>Agregar Productos</MenuItem>
         <MenuItem onClick={handleAddEnvios}>Agregar Envíos</MenuItem>
-        <MenuItem onClick={handleAddTracking}>Agregar Rastreo</MenuItem>
-        
+        <MenuItem onClick={handleAddRastreo}>Agregar Rastreo</MenuItem>
       </Menu>
     </Box>
   );

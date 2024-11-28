@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Depurar con Babel",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "babel-node", "--"],
+        "args": ["src/index.js"],
+        "envFile": "${workspaceFolder}/Backend/AppRestShipping/.env",
+        "cwd": "${workspaceFolder}/Backend/AppRestShipping",
+        "console": "integratedTerminal",
+        "skipFiles": ["<node_internals>/**"]
+      }
+    ]
+  }
+  

@@ -50,7 +50,7 @@ const InfoAdTable = () => {
   // Función para cargar toda la tabla de InfoAd
   const fetchAllInfoAd = async () => {
     try {
-     // setLoadingTable(true);
+      setLoadingTable(true);
       const response = await axios.get(
         `${import.meta.env.VITE_REST_API_ECOMMERCE}entregas/info-ad`
       );

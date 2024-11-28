@@ -50,7 +50,9 @@ const AddTrackingModal = ({ open, onClose, onAddTracking, instituteId }) => {
       if (!instituteId) {
         throw new Error("El ID del instituto es obligatorio.");
       }
-
+  
+      console.log("Institute ID recibido:", instituteId); // Verificar que el ID del instituto llegue correctamente
+  
       const payload = {
         NumeroGuia: formData.NumeroGuia,
         IdRepartidorOK: formData.IdRepartidorOK,
@@ -61,13 +63,14 @@ const AddTrackingModal = ({ open, onClose, onAddTracking, instituteId }) => {
         UsuarioRegistro: formData.UsuarioRegistro,
         IdInstitutoOK: instituteId,
       };
-
+  
       const response = await axios.post(
         `${import.meta.env.VITE_REST_API_ECOMMERCE}entregas/rastreos`,
         payload
       );
-
+  
       if (response.status === 201) {
+        console.log("Respuesta del servidor:", response.data); // Verificar la respuesta del servidor
         onAddTracking(response.data);
         setSuccessMessage(true);
         setFormData({
@@ -89,6 +92,7 @@ const AddTrackingModal = ({ open, onClose, onAddTracking, instituteId }) => {
       setErrorMessage(true);
     }
   };
+  
 
   return (
     <>
@@ -167,6 +171,7 @@ const AddTrackingModal = ({ open, onClose, onAddTracking, instituteId }) => {
                 </Button>
               </span>
             </Tooltip>
+
           </Stack>
         </Box>
       </Modal>

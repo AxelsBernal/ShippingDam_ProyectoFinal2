@@ -525,8 +525,13 @@ export const updateInfoAdByIdInstituto = async (req, res, next) => {
 
 
 
+
+
 //APARTADO DE RASTREO
-export const createRastreo = async (req, res, next) => {
+
+//AGREGAR
+
+export const createRastreo = async (req, res) => {
   try {
     const {
       IdInstitutoOK,
@@ -539,69 +544,143 @@ export const createRastreo = async (req, res, next) => {
       UsuarioRegistro,
     } = req.body;
 
-    // Validar campos obligatorios
     if (
       !IdInstitutoOK ||
       !NumeroGuia ||
       !IdRepartidorOK ||
       !NombreRepartidor ||
-      !Alias ||
       !Ubicacion ||
-      !FechaRegistro ||
       !UsuarioRegistro
     ) {
       return res
         .status(400)
-        .json({ message: 'Todos los campos son obligatorios.' });
+        .json({ message: "Todos los campos son obligatorios." });
     }
 
-    // Crear el nuevo rastreo
     const nuevoRastreo = {
       NumeroGuia,
       IdRepartidorOK,
       NombreRepartidor,
       Alias,
-      Ubicacion,
-      FechaRegistro,
-      UsuarioRegistro,
+      seguimiento: [
+        {
+          Ubicacion,
+          FechaReg: FechaRegistro || new Date(),
+          UsuarioReg: UsuarioRegistro,
+        },
+      ],
     };
 
-    // Verificar si existe el documento y que `envios` no esté vacío
     const instituto = await Entrega.findOne({ IdInstitutoOK });
 
     if (!instituto) {
-      return res
-        .status(404)
-        .json({ message: `No se encontró el instituto con IdInstitutoOK: ${IdInstitutoOK}` });
+      return res.status(404).json({
+        message: `No se encontró el instituto con IdInstitutoOK: ${IdInstitutoOK}`,
+      });
     }
 
-    // Si `envios` está vacío, agregar un objeto base
-    if (instituto.envios.length === 0) {
-      await Entrega.updateOne(
-        { IdInstitutoOK },
-        { $push: { envios: { rastreos: [] } } }
-      );
+    if (!Array.isArray(instituto.envios) || instituto.envios.length === 0) {
+      return res.status(400).json({
+        message: `No se encontraron envíos para el instituto con IdInstitutoOK: ${IdInstitutoOK}`,
+      });
     }
 
-    // Ahora agregar el nuevo rastreo al primer objeto de `envios`
-    const resultado = await Entrega.updateOne(
-      { IdInstitutoOK, 'envios.0': { $exists: true } }, // Buscar que exista al menos un objeto en `envios`
-      { $push: { 'envios.0.rastreos': nuevoRastreo } }
-    );
-
-    // Verificar si se modificó el documento
-    if (!resultado.modifiedCount) {
-      return res
-        .status(500)
-        .json({ message: 'No se pudo agregar el rastreo.' });
+    // Asegúrate de que `rastreos` es un array
+    const envio = instituto.envios[0];
+    if (!Array.isArray(envio.rastreos)) {
+      envio.rastreos = [];
     }
 
-    res.status(201).json({ message: 'Rastreo creado con éxito.', data: nuevoRastreo });
+    // Agregar el nuevo rastreo al array de rastreos
+    envio.rastreos.push(nuevoRastreo);
+
+    await instituto.save();
+
+    res.status(201).json({
+      message: "Rastreo creado con éxito.",
+      data: nuevoRastreo,
+    });
   } catch (error) {
-    console.error('Error en createRastreo:', error);
-    res.status(500).json({ message: 'Error interno del servidor.', error: error.message });
+    console.error("Error en createRastreo:", error.message, error.stack);
+    res.status(500).json({
+      message: "Error interno del servidor.",
+      error: error.message,
+    });
   }
 };
+
+
+//UPDATE
+
+// Controlador para actualizar un rastreo específico
+export const updateRastreo = async (req, res) => {
+  try {
+    const { IdInstitutoOK, NumeroGuia } = req.params; // Extraemos los parámetros de la ruta
+    const rastreoData = req.body; // Los datos actualizados desde el cuerpo de la petición
+
+    if (!IdInstitutoOK || !NumeroGuia) {
+      return res.status(400).json({
+        message: "IdInstitutoOK y NumeroGuia son obligatorios.",
+      });
+    }
+
+    // Actualizar el rastreo correspondiente dentro del array envios.rastreos
+    const result = await Entrega.updateOne(
+      { IdInstitutoOK, "envios.rastreos.NumeroGuia": NumeroGuia },
+      { $set: { "envios.$[envio].rastreos.$[rastreo]": rastreoData } },
+      {
+        arrayFilters: [
+          { "envio.rastreos": { $exists: true } },
+          { "rastreo.NumeroGuia": NumeroGuia },
+        ],
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({
+        message: "No se encontró el rastreo a actualizar.",
+      });
+    }
+
+    res.status(200).json({
+      message: "Rastreo actualizado correctamente.",
+      updatedRastreo: rastreoData,
+    });
+  } catch (error) {
+    console.error("Error al actualizar rastreo:", error.message);
+    res.status(500).json({
+      message: "Error al actualizar el rastreo.",
+      error: error.message,
+    });
+  }
+};
+
+//DELETE
+export const deleteRastreo = async (req, res) => {
+  try {
+    const { IdInstitutoOK, NumeroGuia } = req.params;
+
+    // Actualiza el modelo según tu esquema
+    const result = await Entrega.updateOne(
+      { IdInstitutoOK, "envios.rastreos.NumeroGuia": NumeroGuia },
+      { $pull: { "envios.$.rastreos": { NumeroGuia } } }
+    );
+
+    if (!result.modifiedCount) {
+      return res.status(404).json({ message: "Rastreo no encontrado." });
+    }
+
+    res.status(200).json({ message: "Rastreo eliminado correctamente." });
+  } catch (error) {
+    console.error("Error al eliminar rastreo:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
+  }
+};
+
+
+
+
+
 
 // CRUD para la funcionalidad de envíos
 

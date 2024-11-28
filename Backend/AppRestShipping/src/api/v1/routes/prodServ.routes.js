@@ -70,6 +70,25 @@ router.put('/info-ad/:IdInstitutoOK', entregaController.updateInfoAdByIdInstitut
 
 //CRUD ENVIOS
 
+
+//CRUD INFO 
+router.put("/productos/:IdProdServOK", entregaController.updateProduct);
+
+router.delete("/productos/:IdProdServOK", entregaController.deleteProduct);
+
+// Nueva ruta: Obtener todos los productos
+router.get("/productos", entregaController.getAllProducts);
+
+// Nueva ruta: Obtener productos por IdInstitutoOK
+router.get("/:IdInstitutoOK/productos", entregaController.getProductosByInstituto);
+
+// Nueva ruta: Obtener todos los productos
+router.get("/productos", entregaController.getAllProducts);
+
+// Nueva ruta: Obtener productos por IdInstitutoOK
+router.get("/:IdInstitutoOK/productos", entregaController.getProductosByInstituto);
+
+
 // Nueva ruta: Obtener todas las IDs de Institutos con sus envíos
 router.get("/envios", entregaController.getAllInstitutesEnvios);
 
@@ -83,6 +102,10 @@ router.delete("/envios/:IdInstitutoOK", entregaController.deleteEnviosByInstitut
 router.put("/envios/:IdInstitutoOK", entregaController.updateEnviosByInstitute);
 
 router.put("/FIC/:IdInstitutoOK", entregaController.updateEntregaByIdInstitutoOK);
+
+
+
+
   
 
 

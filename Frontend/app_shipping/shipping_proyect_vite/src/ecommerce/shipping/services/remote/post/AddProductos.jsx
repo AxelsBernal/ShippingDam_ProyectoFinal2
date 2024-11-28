@@ -12,5 +12,6 @@ export const addProduct = async (IdInstitutoOK, productData) => {
   } catch (error) {
     console.error("Error al agregar el producto:", error);
     throw error.response?.data || error;
+    //HOLA
   }
 };

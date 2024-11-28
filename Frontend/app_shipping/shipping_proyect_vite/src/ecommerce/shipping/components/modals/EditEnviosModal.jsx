@@ -10,13 +10,6 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
     CostoEnvio: "",
   });
 
-  const [errors, setErrors] = useState({
-    IdDomicilioOK: false,
-    IdPaqueteriaOK: false,
-    CostoEnvio: false,
-    IdTipoMetodoEnvio: false,
-  });
-
   // Cargar datos de la fila seleccionada al abrir el modal
   useEffect(() => {
     if (selectedRow) {
@@ -37,27 +30,11 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
       ...prevData,
       [name]: value,
     }));
-    // Actualizar errores si el campo se llena
-    if (value) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: false,
-      }));
-    }
   };
 
   // Maneja el envío del formulario
   const handleSubmit = () => {
-    const newErrors = {
-      IdDomicilioOK: !formData.IdDomicilioOK,
-      IdPaqueteriaOK: !formData.IdPaqueteriaOK,
-      CostoEnvio: !formData.CostoEnvio,
-      IdTipoMetodoEnvio: !formData.IdTipoMetodoEnvio,
-    };
-
-    setErrors(newErrors);
-
-    if (Object.values(newErrors).includes(true)) {
+    if (!formData.IdDomicilioOK || !formData.IdPaqueteriaOK || !formData.CostoEnvio) {
       alert("Por favor, completa todos los campos obligatorios.");
       return;
     }
@@ -101,8 +78,6 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
             value={formData.IdDomicilioOK}
             onChange={handleChange}
             required
-            error={errors.IdDomicilioOK}
-            helperText={errors.IdDomicilioOK ? "Este campo es obligatorio" : ""}
           />
 
           {/* ID Paquetería */}
@@ -112,8 +87,6 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
             value={formData.IdPaqueteriaOK}
             onChange={handleChange}
             required
-            error={errors.IdPaqueteriaOK}
-            helperText={errors.IdPaqueteriaOK ? "Este campo es obligatorio" : ""}
           />
 
           {/* Tipo Método Envío */}
@@ -123,8 +96,6 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
             value={formData.IdTipoMetodoEnvio}
             onChange={handleChange}
             required
-            error={errors.IdTipoMetodoEnvio}
-            helperText={errors.IdTipoMetodoEnvio ? "Este campo es obligatorio" : ""}
           />
 
           {/* Costo Envío */}
@@ -135,8 +106,6 @@ const EditEnviosModal = ({ open, onClose, onEditEnvio, selectedRow }) => {
             value={formData.CostoEnvio}
             onChange={handleChange}
             required
-            error={errors.CostoEnvio}
-            helperText={errors.CostoEnvio ? "Este campo es obligatorio" : ""}
           />
         </Stack>
 
