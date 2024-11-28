@@ -21,7 +21,6 @@ const AddShippingModal = ({ open, onClose, onAddShipping }) => {
   });
 
   const [successMessage, setSuccessMessage] = useState(false); // Estado para el mensaje de éxito
-  const [errors, setErrors] = useState({}); // Estado para guardar los errores de validación
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,27 +30,7 @@ const AddShippingModal = ({ open, onClose, onAddShipping }) => {
     }));
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    let formIsValid = true;
-
-    // Validación para asegurarse de que todos los campos sean llenados
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        newErrors[key] = "Este campo es obligatorio";
-        formIsValid = false;
-      }
-    });
-
-    setErrors(newErrors);
-    return formIsValid;
-  };
-
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      return; // Si la validación falla, no envíes el formulario
-    }
-
     try {
       // Llamada al backend para guardar los datos
       const response = await axios.post(
@@ -100,18 +79,41 @@ const AddShippingModal = ({ open, onClose, onAddShipping }) => {
             Agregar Nuevo Envío
           </Typography>
           <Stack spacing={2}>
-            {["IdInstitutoOK", "IdNegocioOK", "IdEntregaOK", "IdEntregaBK", "IdOrdenOK"].map((field) => (
-              <TextField
-                key={field}
-                label={field.replace("Id", "").replace(/([A-Z])/g, " $1")}
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                fullWidth
-                error={!!errors[field]} // Si hay error, muestra el borde rojo
-                helperText={errors[field]} // Muestra el mensaje de error
-              />
-            ))}
+            <TextField
+              label="Instituto OK"
+              name="IdInstitutoOK"
+              value={formData.IdInstitutoOK}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              label="Negocio OK"
+              name="IdNegocioOK"
+              value={formData.IdNegocioOK}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              label="ID Entrega OK"
+              name="IdEntregaOK"
+              value={formData.IdEntregaOK}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              label="ID Entrega BK"
+              name="IdEntregaBK"
+              value={formData.IdEntregaBK}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              label="ID Orden OK"
+              name="IdOrdenOK"
+              value={formData.IdOrdenOK}
+              onChange={handleChange}
+              fullWidth
+            />
             <Button variant="contained" onClick={handleSubmit}>
               Guardar
             </Button>

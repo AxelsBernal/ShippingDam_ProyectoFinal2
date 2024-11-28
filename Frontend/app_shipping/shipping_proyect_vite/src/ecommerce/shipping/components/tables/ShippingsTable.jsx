@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MaterialReactTable } from "material-react-table";
+
 import {
   Box,
   Tooltip,
@@ -20,6 +21,7 @@ import AddTrackingModal from "../modals/AddTrackingModal "; // Importar modal de
 import { deleteShipping } from "../../services/remote/del/DeleteShipping";
 import { getAllShippings } from "../../services/remote/get/GetAllShippings";
 import AddEnviosModal from "../modals/AddEnviosModal";
+import { editShipping } from "../../services/remote/put/EditShipping";
 
 const ShippingColumns = [
   { accessorKey: "IdInstitutoOK", header: "ID Instituto", size: 200 },
@@ -92,24 +94,20 @@ const ShippingsTable = () => {
 
   const handleEdit = async (updatedShipping) => {
     try {
-      const updatedData = await updateShipping(
+      const updatedData = await editShipping(
         updatedShipping.IdInstitutoOK,
         updatedShipping
       );
       setShippingsData((prevData) =>
         prevData.map((row) =>
-          row.IdInstitutoOK === updatedData.IdInstitutoOK
-            ? updatedData
-            : row
+          row.IdInstitutoOK === updatedData.IdInstitutoOK ? updatedData : row
         )
       );
       setIsEditModalOpen(false);
-      alert("Envío actualizado correctamente.");
+      showSnackbar("Envío actualizado correctamente.", "success");
     } catch (error) {
       console.error("Error al actualizar el envío:", error);
-      alert(
-        error.response?.data?.message || "Ocurrió un error al actualizar el envío."
-      );
+      showSnackbar("Ocurrió un error al actualizar el envío.", "error");
     }
   };
 
@@ -155,11 +153,9 @@ const ShippingsTable = () => {
   };
 
   const handleAddRastreo = () => {
-    console.log("Fila seleccionada para agregar rastreo:", selectedRow); // Verificar el contenido de selectedRow
     setIsAddTrackingModalOpen(true);
     handleCloseContextMenu();
   };
-  
 
   return (
     <Box>
@@ -211,7 +207,6 @@ const ShippingsTable = () => {
         onAddTracking={handleAddTracking}
         instituteId={selectedRow?.IdInstitutoOK}
       />
-
 
       <MaterialReactTable
         columns={ShippingColumns}

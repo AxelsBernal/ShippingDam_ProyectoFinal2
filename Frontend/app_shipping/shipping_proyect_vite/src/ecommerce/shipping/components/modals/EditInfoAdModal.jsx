@@ -12,9 +12,9 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
     UsuarioReg: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [saveAttempted, setSaveAttempted] = useState(false); // Estado para controlar intento de guardar
+  const [errors, setErrors] = useState({}); // Estado para manejar errores
 
+  // Inicializa el formulario con los datos de la fila seleccionada
   useEffect(() => {
     if (selectedRow) {
       setFormData({
@@ -26,15 +26,16 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
         FechaReg: selectedRow.detail_row?.detail_row_reg?.[0]?.FechaReg || "",
         UsuarioReg: selectedRow.detail_row?.detail_row_reg?.[0]?.UsuarioReg || "",
       });
-      setErrors({});
-      setSaveAttempted(false); // Restablece el intento de guardar al abrir el modal
+      setErrors({}); // Limpia los errores al abrir el modal
     }
   }, [selectedRow]);
 
+  // Maneja cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "Valor" && !/^\d*$/.test(value)) {
+      // Filtrar solo números para el campo "Valor"
       return;
     }
 
@@ -45,10 +46,11 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
 
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "",
+      [name]: "", // Limpia el error cuando se cambia el valor
     }));
   };
 
+  // Valida los campos del formulario
   const validateForm = () => {
     const newErrors = {};
     if (!formData.Etiqueta) newErrors.Etiqueta = "La etiqueta es obligatoria.";
@@ -58,16 +60,16 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
     return newErrors;
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = () => {
-    setSaveAttempted(true); // Marca que se intentó guardar
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    onEditInfoAd(formData);
-    onClose();
+    onEditInfoAd(formData); // Llama a la función para actualizar la información
+    onClose(); // Cierra el modal
   };
 
   return (
@@ -83,7 +85,6 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
-          border: saveAttempted && Object.keys(errors).length > 0 ? "2px solid red" : "none", // Resaltar en rojo si hay errores
         }}
       >
         <Typography variant="h6" mb={2} color="primary">
@@ -91,12 +92,15 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
         </Typography>
 
         <Stack spacing={2}>
+          {/* ID Instituto (Deshabilitado) */}
           <TextField
             label="ID del Instituto"
             name="IdInstitutoOK"
             value={formData.IdInstitutoOK}
             disabled
           />
+
+          {/* Etiqueta */}
           <TextField
             label="Etiqueta"
             name="Etiqueta"
@@ -105,6 +109,8 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
             error={!!errors.Etiqueta}
             helperText={errors.Etiqueta}
           />
+
+          {/* Valor */}
           <TextField
             label="Valor"
             name="Valor"
@@ -113,6 +119,8 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
             error={!!errors.Valor}
             helperText={errors.Valor}
           />
+
+          {/* Secuencia */}
           <TextField
             label="Secuencia"
             name="Secuencia"
@@ -122,6 +130,8 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
             error={!!errors.Secuencia}
             helperText={errors.Secuencia}
           />
+
+          {/* Activo */}
           <TextField
             label="Activo"
             name="Activo"
@@ -132,6 +142,8 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
             <MenuItem value="S">Sí</MenuItem>
             <MenuItem value="N">No</MenuItem>
           </TextField>
+
+          {/* Fecha Registro */}
           <TextField
             label="Fecha de Registro"
             name="FechaReg"
@@ -139,6 +151,8 @@ const EditInfoAdModal = ({ open, onClose, onEditInfoAd, selectedRow }) => {
             value={formData.FechaReg}
             onChange={handleChange}
           />
+
+          {/* Usuario Registro */}
           <TextField
             label="Usuario Registro"
             name="UsuarioReg"

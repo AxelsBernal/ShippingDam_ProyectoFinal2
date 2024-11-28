@@ -87,7 +87,51 @@ export default function Home() {
         </Grid>
       </Box>
 
-      
+      {/* Sección de estadísticas */}
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h4" gutterBottom>
+          Estadísticas
+        </Typography>
+
+        {/* Gráfico circular */}
+        <Typography variant="h6" gutterBottom>
+          Distribución de Productos
+        </Typography>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={dataPieChart}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#8884d8"
+              label
+            >
+              {dataPieChart.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={index % 2 === 0 ? "#0088FE" : "#00C49F"} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+
+        {/* Gráfico de barras */}
+        <Typography variant="h6" gutterBottom>
+          Ventas Mensuales
+        </Typography>
+        <BarResponsiveContainer width="100%" height={300}>
+          <BarChart data={dataBarChart}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="uv" fill="#8884d8" />
+            <Bar dataKey="pv" fill="#82ca9d" />
+          </BarChart>
+        </BarResponsiveContainer>
+      </Box>
     </div>
   );
 }

@@ -1,19 +1,13 @@
 import React from "react";
 import { Box, Modal, Typography, Button, Stack } from "@mui/material";
 
-const DeleteShippingModal = ({
-  open,
-  onClose,
-  onDelete,
-  selectedRow,
-  entity = "envío", // Por defecto es "envío", pero puedes pasarlo como "rastreo"
-}) => {
+const DeleteShippingModal = ({ open, onClose, onDeleteShipping, selectedRow }) => {
   const handleDelete = () => {
     if (!selectedRow) {
-      alert(`Por favor, selecciona un ${entity} para eliminar.`);
+      alert("Por favor, selecciona un envío para eliminar.");
       return;
     }
-    onDelete(); // Llama a la función de eliminación directamente
+    onDeleteShipping(); // Llama a la función de eliminación directamente
     onClose();
   };
 
@@ -40,7 +34,7 @@ const DeleteShippingModal = ({
             color: "red", // Cambiar color del título a rojo
           }}
         >
-          Eliminar {entity.charAt(0).toUpperCase() + entity.slice(1)}
+          Eliminar 
         </Typography>
 
         {/* Pregunta con letras negras */}
@@ -51,8 +45,7 @@ const DeleteShippingModal = ({
             color: "black", // Cambiar color del texto a negro
           }}
         >
-          ¿Estás seguro de que deseas eliminar el {entity} con el ID:{" "}
-          <strong>{selectedRow?.IdInstitutoOK || "Sin ID"}</strong>?
+          ¿Estás seguro de que deseas eliminar  ID: <strong>{selectedRow?.IdInstitutoOK}</strong>?
         </Typography>
 
         <Stack direction="row" spacing={2} justifyContent="flex-end">
