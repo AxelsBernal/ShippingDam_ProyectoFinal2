@@ -1,0 +1,235 @@
+### POST 1 - Envío Internacional Completo
+POST http://localhost:3020/api/v1/entregas
+Content-Type: application/json
+
+{
+  "IdInstitutoOK": "1001",
+  "IdNegocioOK": "2001",
+  "IdEntregaOK": "1001-2001-INTL001",
+  "IdEntregaBK": "INTL-001",
+  "IdOrdenOK": "ORD-1001",
+  "info_ad": [
+    {
+      "IdEtiquetaOK": "E1",
+      "IdEtiqueta": "FechaEnvio",
+      "Etiqueta": "Fecha de Envío",
+      "Valor": "2024-01-01T10:00:00.000Z",
+      "IdTipoSeccionOK": "Seccion-Envio",
+      "Secuencia": 1,
+      "detail_row": {
+        "Activo": "S",
+        "Borrado": "N",
+        "detail_row_reg": [
+          {
+            "FechaReg": "2023-12-30T08:00:00.000Z",
+            "UsuarioReg": "Admin01"
+          }
+        ]
+      }
+    }
+  ],
+  "envios": [
+    {
+      "IdDomicilioOK": "DOM-001",
+      "IdPaqueteriaOK": "DHL-001",
+      "IdTipoMetodoEnvio": "Aéreo",
+      "CostoEnvio": 300.5,
+      "info_ad": [
+        {
+          "IdEtiquetaOK": "E2",
+          "IdEtiqueta": "CiudadDestino",
+          "Etiqueta": "Destino",
+          "Valor": "Nueva York",
+          "IdTipoSeccionOK": "Seccion-Destino",
+          "Secuencia": 2,
+          "detail_row": {
+            "Activo": "S",
+            "Borrado": "N",
+            "detail_row_reg": [
+              {
+                "FechaReg": "2023-12-30T09:00:00.000Z",
+                "UsuarioReg": "Admin01"
+              }
+            ]
+          }
+        }
+      ],
+      "productos": [
+        {
+          "IdProdServOK": "P001",
+          "IdPresentaOK": "PR001",
+          "DesProdServ": "Laptop Dell XPS",
+          "DesPresenta": "Caja con protector",
+          "CantidadPed": 1,
+          "CantidadEnt": 1
+        }
+      ],
+      "estatus": [
+        {
+          "IdTipoEstatusOK": "EST01",
+          "Actual": "En tránsito",
+          "Observacion": "Llegada estimada en 3 días",
+          "detail_row": {
+            "Activo": "S",
+            "Borrado": "N",
+            "detail_row_reg": [
+              {
+                "FechaReg": "2024-01-01T12:00:00.000Z",
+                "UsuarioReg": "Admin02"
+              }
+            ]
+          }
+        }
+      ],
+      "rastreos": {
+        "NumeroGuia": "DHL123456789",
+        "IdRepartidorOK": "REP001",
+        "NombreRepartidor": "John Doe",
+        "Alias": "Delivery NYC",
+        "seguimiento": [
+          {
+            "Ubicacion": "Aeropuerto CDMX",
+            "DesUbicacion": "Carga de avión",
+            "Referencias": "Hangar 2",
+            "Observacion": "Paquete en tránsito aéreo",
+            "FechaReg": "2024-01-01T11:00:00.000Z",
+            "UsuarioReg": "User01"
+          }
+        ]
+      }
+    }
+  ],
+  "detail_row": {
+    "Activo": "S",
+    "Borrado": "N",
+    "detail_row_reg": [
+      {
+        "FechaReg": "2023-12-30T08:00:00.000Z",
+        "UsuarioReg": "Admin01"
+      }
+    ]
+  }
+}
+
+### POST 2 - Envío Nacional Express
+POST http://localhost:3020/api/v1/entregas
+Content-Type: application/json
+
+{
+  "IdInstitutoOK": "2001",
+  "IdNegocioOK": "3001",
+  "IdEntregaOK": "2001-3001-EXP001",
+  "IdEntregaBK": "EXP-001",
+  "IdOrdenOK": "ORD-2001",
+  "info_ad": [
+    {
+      "IdEtiquetaOK": "E3",
+      "IdEtiqueta": "Prioridad",
+      "Etiqueta": "Prioridad",
+      "Valor": "Alta",
+      "IdTipoSeccionOK": "Seccion-Prioridad",
+      "Secuencia": 3,
+      "detail_row": {
+        "Activo": "S",
+        "Borrado": "N",
+        "detail_row_reg": [
+          {
+            "FechaReg": "2024-01-01T10:00:00.000Z",
+            "UsuarioReg": "User02"
+          }
+        ]
+      }
+    }
+  ],
+  "envios": [
+    {
+      "IdDomicilioOK": "DOM-002",
+      "IdPaqueteriaOK": "FedEx-002",
+      "IdTipoMetodoEnvio": "Terrestre",
+      "CostoEnvio": 150.3,
+      "info_ad": [
+        {
+          "IdEtiquetaOK": "E4",
+          "IdEtiqueta": "Zona",
+          "Etiqueta": "Zona de Envío",
+          "Valor": "Ciudad de México",
+          "IdTipoSeccionOK": "Seccion-Zona",
+          "Secuencia": 4,
+          "detail_row": {
+            "Activo": "S",
+            "Borrado": "N",
+            "detail_row_reg": [
+              {
+                "FechaReg": "2024-01-01T10:30:00.000Z",
+                "UsuarioReg": "User02"
+              }
+            ]
+          }
+        }
+      ],
+      "productos": [
+        {
+          "IdProdServOK": "P002",
+          "IdPresentaOK": "PR002",
+          "DesProdServ": "Smartphone Samsung Galaxy",
+          "DesPresenta": "Caja con burbujas",
+          "CantidadPed": 2,
+          "CantidadEnt": 2
+        }
+      ]
+    }
+  ]
+}
+
+### POST 3 - Envío Económico
+POST http://localhost:3020/api/v1/entregas
+Content-Type: application/json
+
+{
+  "IdInstitutoOK": "7001",
+  "IdNegocioOK": "8001",
+  "IdEntregaOK": "7001-8001-PRM001",
+  "IdEntregaBK": "PRM-001",
+  "IdOrdenOK": "ORD-7001",
+  "info_ad": [
+    {
+      "IdEtiquetaOK": "E10",
+      "IdEtiqueta": "Fragil",
+      "Etiqueta": "Contenido Frágil",
+      "Valor": "Sí",
+      "IdTipoSeccionOK": "Seccion-Contenido",
+      "Secuencia": 10,
+      "detail_row": {
+        "Activo": "S",
+        "Borrado": "N",
+        "detail_row_reg": [
+          {
+            "FechaReg": "2024-01-06T08:00:00.000Z",
+            "UsuarioReg": "Admin05"
+          }
+        ]
+      }
+    }
+  ],
+  "envios": [
+    {
+      "IdDomicilioOK": "DOM-007",
+      "IdPaqueteriaOK": "DHL-007",
+      "IdTipoMetodoEnvio": "Aéreo",
+      "CostoEnvio": 1000.0,
+      "productos": [
+        {
+          "IdProdServOK": "P006",
+          "IdPresentaOK": "PR006",
+          "DesProdServ": "iMac 27 pulgadas",
+          "DesPresenta": "Caja reforzada",
+          "CantidadPed": 1,
+          "CantidadEnt": 1
+        }
+      ]
+    }
+  ]
+}
+
+
+

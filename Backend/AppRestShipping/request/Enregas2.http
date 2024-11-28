@@ -1,0 +1,63 @@
+@api = http://localhost:3020/api/v1/entregas/
+
+//Commerce
+#@api = http://187.229.22.99:8010/api/v1/prod-serv
+###
+GET http://localhost:3020/api/v1/entregas/3001
+### GET
+GET {{api}}
+###
+GET {{api}}1001
+
+###
+GET http://localhost:3020/api/v1/entregas/envios/instituto/1001
+###
+GET http://localhost:3020/api/v1/entregas/instituto/envios
+###
+GET http://localhost:3020/api/v1/entregas/rastreos/instituto/2001
+
+###
+GET http://localhost:3020/api/v1/entregas/instituto/rastreos
+###
+POST http://localhost:3020/api/v1/entregas/info-adicional/4001
+Content-Type: application/json
+
+{
+  "Etiqueta": "Etiqueta de prueba2",
+  "Valor": "Valor de prueba",
+  "Secuencia": 1,
+  "Activo": "S",
+  "FechaReg": "2024-11-25T12:00:00Z",
+  "UsuarioReg": "UsuarioDePrueba"
+}
+
+###
+DELETE http://localhost:3020/api/v1/entregas/info-ad/5001
+###
+PUT http://localhost:3020/api/v1/entregas/info-ad/7001
+Content-Type: application/json
+
+{
+  "Etiqueta": "NuevaEtiqueta",
+  "Valor": "NuevoValor",
+  "Secuencia": 5,
+  "Activo": "N",
+  "FechaReg": "2024-11-25T10:00:00.000Z",
+  "UsuarioReg": "UsuarioActualizado"
+}
+
+
+### 
+PUT http://localhost:3020/api/v1/entregas/FIC/1001
+Content-Type: application/json
+
+{
+  "IdNegocioOK": "2001",
+  "IdEntregaOK": "1001-2001-INTL001",
+  "IdEntregaBK": "INTL-002",
+  "IdOrdenOK": "ORD-1001"
+}
+
+
+
+

@@ -1,0 +1,106 @@
+/* Estilos globales */
+html, body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* Aseguramos que los elementos estén apilados */
+  height: 100%;
+  background-color: #000000; /* Fondo negro */
+  font-family: 'Arial', 'Roboto', sans-serif; /* Tipografía sencilla */
+  color: #FFFFFF; /* Texto blanco */
+}
+
+#root {
+  display: flex;
+  flex-direction: column; /* Aseguramos que los elementos se apilen de arriba a abajo */
+  background-color: #FF9900; /* Naranja primario */
+  flex: 1; /* Ocupa todo el alto disponible */
+}
+
+#div-app {
+  display: flex;
+  flex-direction: column; /* Apilamos los elementos dentro de div-app */
+  flex: 1; /* Asegura que el contenido ocupe el espacio restante */
+  padding: 0rem 1rem;
+  background-color: #C4C4C4; /* Gris claro */
+  border-radius: 20px;
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos toda la altura de la pantalla */
+}
+
+#div-footer {
+  background-color: #FF9900; /* Naranja primario */
+  padding: 1rem;
+  text-align: center; /* Centra el contenido del footer */
+  width: 100%;
+  bottom: 0;
+}
+
+#div-home {
+  display: flex;
+  flex-direction: column; /* Apilamos los elementos dentro de div-home */
+  flex: 1; /* Asegura que el contenido ocupe el espacio restante */
+  border-radius: 20px;
+  padding: 0rem 1rem;
+  background-color: #FFFFFF; /* Blanco */
+}
+
+#div-module {
+  display: flex;
+  flex-direction: column; /* Apilamos los elementos dentro de div-module */
+  flex: 1; /* Asegura que el contenido ocupe el espacio restante */
+  padding: 0rem 1rem;
+  background-color: #FFFFFF; /* Blanco */
+}
+
+#detail {
+  flex: 1;
+  padding: 1rem; /* Añadimos padding a detail */
+  width: 100%;
+  height: 100%;
+}
+
+#detail.loading {
+  opacity: 0.25;
+  transition: opacity 200ms;
+  transition-delay: 200ms;
+}
+
+/* Media Query para dispositivos pequeños (móviles) */
+@media (max-width: 600px) {
+  html, body {
+    flex-direction: column; /* Aseguramos que los elementos se apilen en móviles */
+  }
+
+  #div-app {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  #div-footer {
+    padding: 0.5rem;
+  }
+
+  #div-home, #div-module {
+    padding: 0.5rem;
+  }
+
+  #detail {
+    padding: 0.5rem;
+  }
+}
+
+/* Media Query para dispositivos medianos (tablets) */
+@media (max-width: 768px) {
+  #div-app {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  #div-footer {
+    padding: 0.75rem;
+  }
+
+  #div-home, #div-module {
+    padding: 0.75rem;
+  }
+}

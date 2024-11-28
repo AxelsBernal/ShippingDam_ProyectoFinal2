@@ -1,0 +1,84 @@
+/* Definición de estilos globales para el documento */
+:root {
+  /* Establece la fuente base y las propiedades de tipografía */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Define los colores y el fondo, incluyendo el soporte para esquemas de color claro y oscuro */
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  /* Mejora la legibilidad del texto */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilo para enlaces */
+a {
+  font-weight: 500;
+  color: #646cff; /* Color del enlace */
+  text-decoration: inherit; /* Elimina el subrayado del enlace */
+}
+
+a:hover {
+  color: #535bf2; /* Color del enlace al pasar el ratón */
+}
+
+/* Estilos generales para el cuerpo de la página */
+body {
+  margin: 0; /* Elimina el margen predeterminado */
+  display: flex; /* Usa Flexbox para centrar el contenido */
+  place-items: center; /* Centra el contenido en el eje X e Y */
+  min-width: 320px; /* Define un ancho mínimo para la pantalla */
+  min-height: 100vh; /* Define la altura mínima de la pantalla */
+}
+
+/* Estilo para el título (h1) */
+h1 {
+  font-size: 3.2em; /* Tamaño de fuente grande */
+  line-height: 1.1; /* Ajusta la altura de la línea */
+}
+
+/* Estilo para los botones */
+button {
+  border-radius: 8px; /* Bordes redondeados */
+  border: 1px solid transparent; /* Borde transparente por defecto */
+  padding: 0.6em 1.2em; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de fuente */
+  font-weight: 500;
+  font-family: inherit; /* Hereda la fuente del documento */
+  background-color: #1a1a1a; /* Fondo oscuro para el botón */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  transition: border-color 0.25s; /* Transición suave en el color del borde */
+}
+
+button:hover {
+  border-color: #646cff; /* Color del borde cuando el botón está en hover */
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color; /* Estilo del borde cuando el botón es enfocado */
+}
+
+/* Estilos específicos cuando el esquema de color preferido es claro */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547; /* Color de texto para esquema claro */
+    background-color: #ffffff; /* Fondo blanco para esquema claro */
+  }
+
+  /* Cambia el color de los enlaces al pasar el ratón en esquema claro */
+  a:hover {
+    color: #747bff;
+  }
+
+  /* Cambia el fondo de los botones en esquema claro */
+  button {
+    background-color: #f9f9f9; /* Fondo claro para el botón */
+  }
+}

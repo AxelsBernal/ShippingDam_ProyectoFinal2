@@ -1,0 +1,52 @@
+/* Contenedor principal con un ancho máximo de 1280px, centrado y con espaciado */
+#root {
+  max-width: 1280px;
+  margin: 0 auto; /* Centra el contenedor */
+  padding: 2rem; /* Espaciado interno */
+  text-align: center; /* Centra el contenido textual */
+}
+
+/* Estilos para el logo */
+.logo {
+  height: 6em; /* Altura del logo */
+  padding: 1.5em; /* Espaciado alrededor del logo */
+  will-change: filter; /* Optimización para la transición del filtro */
+  transition: filter 300ms; /* Transición suave para el filtro */
+}
+
+/* Efecto de sombra cuando el logo se pasa por encima */
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa); /* Sombra al pasar el mouse */
+}
+
+/* Efecto de sombra en el logo de React */
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa); /* Sombra específica para el logo de React */
+}
+
+/* Animación de rotación del logo */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg); /* Empieza en 0 grados */
+  }
+  to {
+    transform: rotate(360deg); /* Termina en 360 grados (completa la rotación) */
+  }
+}
+
+/* Animación para el logo con clase react */
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear; /* Aplicación de la animación de rotación continua */
+  }
+}
+
+/* Estilos para la tarjeta */
+.card {
+  padding: 2em; /* Espaciado interno de la tarjeta */
+}
+
+/* Estilo para los textos de documentación */
+.read-the-docs {
+  color: #888; /* Color gris para el texto */
+}
